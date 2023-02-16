@@ -59,11 +59,6 @@ meio de várias normas, algumas diretamente determinadoras da igualdade,
 outras buscando a equidade entre os desiguais mediante a concessão de
 direitos sociais fundamentais.
 
-`html_pretty` in the
-[**prettydoc**](https://github.com/yixuan/prettydoc/) package is a new
-output format for creating HTML documents from R Markdown files.
-`html_pretty` is more lightweight compared to `html_document`, and is
-more stylish than `html_vignette` when creating package vignettes.
 
 ## Dados
 
@@ -163,15 +158,15 @@ Quanto à ocupação de Funções e Gratificações Técnicas, é possível obse
 
 ## Fontes e metodologia Base de Dados
 
-A fonte primária para a obtenção das informações apresentadas é o Sistema Integrado de Administração de Pessoal (SIAPE) e o Painel Estatístico de Pessoal (PEP), no link: http://painel.pep.planejamento.gov.br.  
+A fonte primária para a obtenção das informações apresentadas é o Sistema Integrado de Administração de Pessoal (SIAPE) e o Painel Estatístico de Pessoal (PEP), no [**link**](http://painel.pep.planejamento.gov.br)  
 
 Outras fontes: 
- 
-- Convenção OIT: http://www.planalto.gov.br/ccivil_03/_Ato2019-2022/2019/Decreto/D10088.htm#art5  
 
--Banco Mundial: https://www.worldbank.org/pt/news/press-release/2019/02/27/despite-gains-women-face-setbacks-in-legal-rights-affecting-work 
+[**Convenção OIT**](http://www.planalto.gov.br/ccivil_03/_Ato2019-2022/2019/Decreto/D10088.htm#art5)  
 
-- Constituição Federal: http://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm  
+[**Banco Mundial**](https://www.worldbank.org/pt/news/press-release/2019/02/27/despite-gains-women-face-setbacks-in-legal-rights-affecting-work) 
+
+[**Constituição Federal**](http://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm)  
 
 ## Revisões 
 
