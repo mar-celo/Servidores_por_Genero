@@ -1,0 +1,25 @@
+Grupo;Descrição;Masculino;Feminino;Geral;Poder
+;Quantidade;299.037;237.125;536.162;Executivo
+Servidores;Remuneração média (R$);10.942,21;9.603,98;10.350,36;Executivo
+;Idade média (anos);48,73;46,96;47,95;Executivo
+;Quantidade;199.950;229.093;429.043;Executivo
+Aposentados;Provento médio (R$);10.297,57;8.697,08;9.442,97;Executivo
+;Idade média (anos);73,88;71,98;72,86;Executivo
+;Quantidade;27.063;261.829;288.892;Executivo
+Pensionistas;Provento médio (R$);5.734,25;5.649,82;5.657,73;Executivo
+;Idade média (anos);59,08;71,21;70,08;Executivo
+;Quantidade;4.663;2.237;6.900;Legislativo
+Servidores;Remuneração média (R$);22.416,02;21.505,43;22.120,80;Legislativo
+;Idade média (anos);49,31;48,23;48,96;Legislativo
+;Quantidade;4.520;4.139;8.659;Legislativo
+Aposentados;Provento médio (R$);32.978,47;32.628,47;32.811,17;Legislativo
+;Idade média (anos);71,24;69,54;70,43;Legislativo
+;Quantidade;448;3.218;3.666;Legislativo
+Pensionistas;Provento médio (R$);18.755,53;20.504,13;20.290,45;Legislativo
+;Idade média (anos);52,07;67,76;65,84;Legislativo
+;Quantidade;52.186;50.917;103.103;Judiciário
+Servidores;Remuneração média (R$);12.907,51;12.970,58;12.938,66;Judiciário
+;Idade média (anos);47,64;47,64;47,64;Judiciário
+;Quantidade;11.476;20.258;31.734;Judiciário
+Aposentados;;;;;Judiciário
+;Provento médio (R$);21.331,46;21.772,05;21.612,72;Judiciário
