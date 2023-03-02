@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
   html_document:
     toc: true # ou yes
-    toc_float: true # true ou yes
+    toc_float: true # true ou yes 
   prettydoc::html_pretty:
     toc: true # ou yes
     toc_float: true # true ou yes
@@ -115,6 +115,8 @@ No que se refere aos órgãos com o menor percentual de mulheres nos
 quadros de pessoal, três Estados também se destacam, quais sejam: Acre,
 em que as mulheres ocupam um percentual de 38,4% e Rio Grande do Norte
 com 40,3% de mulheres
+
+<iframe src="https://mtegovbr-my.sharepoint.com/personal/marcelo_ribeiro_economia_gov_br/_layouts/15/embed.aspx?UniqueId=44cb3f67-f036-48e9-8480-838d35568538" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="grafico.gif"></iframe>
 
 ```{r echo=FALSE}
 tabela2 <- read_excel("dados/dados.xlsx", sheet = "Planilha1")
