@@ -3,7 +3,12 @@ title: "Servidores classificados por gênero"
 subtitle: "Poder Executivo"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
+  html_document:
+    toc: true # ou yes
+    toc_float: true # true ou yes
   prettydoc::html_pretty:
+    toc: true # ou yes
+    toc_float: true # true ou yes
     theme: architect
     highlight: github
 editor_options: 
