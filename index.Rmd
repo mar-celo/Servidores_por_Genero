@@ -107,6 +107,11 @@ grafico1  |>
   echarts4r::e_legend(right = 0)
 ```
 
+
+```{r, echo=FALSE,fig.align='center'}
+knitr::include_graphics("grafico.gif")
+```
+
 Quando comparamos o quantitativo de servidores separados por sexo e por
 Unidade da Federação (UF), é possível observar dois Estados que se
 destacam quanto ao percentual maior de mulheres em relação ao de homens,
@@ -116,7 +121,7 @@ quadros de pessoal, três Estados também se destacam, quais sejam: Acre,
 em que as mulheres ocupam um percentual de 38,4% e Rio Grande do Norte
 com 40,3% de mulheres
 
-<iframe src="https://mtegovbr-my.sharepoint.com/personal/marcelo_ribeiro_economia_gov_br/_layouts/15/embed.aspx?UniqueId=44cb3f67-f036-48e9-8480-838d35568538" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="grafico.gif"></iframe>
+
 
 ```{r echo=FALSE}
 tabela2 <- read_excel("dados/dados.xlsx", sheet = "Planilha1")
