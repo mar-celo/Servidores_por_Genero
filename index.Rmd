@@ -359,7 +359,7 @@ Talvez criar uma categoria outras e renomear
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 tab_final |>
-  count(Escolaridade = escolaridade , name = "Qtde")|> 
+  count(Nível = grupo_escolaridade, Escolaridade = escolaridade , name = "Qtde")|> 
   arrange(Qtde) |> 
   e_charts(x = Escolaridade, timeline = FALSE)  |>  
   e_bar(Qtde, legend = FALSE) |> 
@@ -378,6 +378,48 @@ tab_final |>
   ) |> 
   e_flip_coords() 
   #e_x_axis(axisLabel = list(rotate = 90))
+```
+
+
+## Alternativa de treemap
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+#geral
+treemap <- tab_final |>
+  count(Nível = grupo_escolaridade, Escolaridade = escolaridade , name = "Qtde")|> 
+  arrange(Qtde)
+
+
+#grupo
+
+grupo <- treemap |> group_by(Nível) |> 
+  summarise(
+    Qtde= sum(Qtde)
+  )
+
+grupo$parents <- "Total"
+
+grupo <- grupo |> dplyr::relocate(parents, labels = Nível, value = Qtde)
+
+#geral
+
+df <- data.frame(parents = "", labels = "Total", value = 0)
+
+
+# CONSTRUCAO TREEMAP
+colnames(treemap) <- c("parents", "labels", "value")
+
+uni <-  bind_rows(df, grupo, treemap)
+
+universe <- data.tree::FromDataFrameNetwork(uni)
+
+universe |> 
+  e_charts() |> 
+  e_treemap() |> 
+  e_title("Escolaridade", "Sexo Feminino") |> 
+  e_tooltip("item")
+
 ```
 
 
@@ -453,3 +495,4 @@ tab_final |>
     prefix = "R$") 
   
 ```
+
