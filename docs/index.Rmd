@@ -172,33 +172,35 @@ knitr::include_graphics("../img/perc.gif")
 
 #manipulacao da base
 
-# base_de_dados <- readr::read_csv2("../dados/df_abs.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+# base_de_dados <- readr::read_csv2("dados/df_abs.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
 
 
 ```
 
 ```{r base_absoluto, echo=FALSE, warning=FALSE}
+# 
 # df <- base_de_dados |> tidyr::pivot_longer(
 #   cols = dplyr::starts_with("X"),
-#   values_to = "Percentual") |> 
+#   values_to = "Percentual") |>
 #   dplyr::mutate(
 #     Ano = substr(name, 2, 5),
 #     # Percentual = readr::parse_number(
 #     #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
 #       Ano = readr::parse_number(Ano),
 #     Funcao = as.factor(Funcao),
-#     Genero = as.factor(Genero)) |> 
-#   dplyr::select(-name) |> 
+#     Genero = as.factor(Genero)) |>
+#   dplyr::select(-name) |>
 #   dplyr::mutate(
 #     Percentual = ifelse(
 #       Genero == 'Mas', Percentual * -1, Percentual
 #       )
 #     )
-#   
-# glimpse(df)
-# 
-# # Alterar os niveis de genero para aparecer na ordem do grafico
-# 
+
+
+
+
+# Alterar os niveis de genero para aparecer na ordem do grafico
+
 # df <- df |> mutate(
 #   Genero = factor(Genero, levels = c("Mas", "Fem"))
 # )
@@ -216,26 +218,26 @@ knitr::include_graphics("../img/perc.gif")
 #   )
 #   ) +
 #   geom_bar(stat = "identity") +
-#   scale_fill_manual(values = c("#004580","#ef0219")) + 
+#   scale_fill_manual(values = c("#004580","#ef0219")) +
 #   scale_y_continuous(breaks=seq(-8000,4500,2000),labels=paste0(abs(seq(-8000,4500,2000))))+
-#   coord_flip() 
-# # +
-# #   theme_minimal()
-#   # facet_share(
-#   #   ~ Genero,
-#   #   dir = "h",
-#   #   scales = "free",
-#   #   reverse_num = TRUE
-#  # )
-# 
-# grafico <- grafico + 
+#   coord_flip()
+# +
+#   theme_minimal()
+  # facet_share(
+  #   ~ Genero,
+  #   dir = "h",
+  #   scales = "free",
+  #   reverse_num = TRUE
+ # )
+
+# grafico <- grafico +
 #   labs(
 #     title = "Cargos de Direção e Assessoramento  2015 - 2022\n\n{closest_state}",
 #     subtitle = "\n\nGênero",
-#     y = "\n\nProporção por Gênero",
+#     y = "\n\nTotal por Gênero",
 #     caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
 #   )
-# 
+# # 
 # grafico <- grafico + theme(
 #   plot.background = element_blank(),
 #   axis.ticks = element_blank(),
@@ -246,7 +248,7 @@ knitr::include_graphics("../img/perc.gif")
 #   strip.background = element_blank(),
 #   strip.text.x = element_blank(),
 #   panel.grid.minor = element_blank(),
-#   panel.grid.major = element_blank(), 
+#   panel.grid.major = element_blank(),
 #   axis.text = element_text(size = 14),
 #   #legend.position = "top",
 #   legend.key.size = unit(0.75, "cm"),
@@ -257,7 +259,7 @@ knitr::include_graphics("../img/perc.gif")
 #   plot.title = element_text(
 #     size = 15,
 #     hjust = 0.5,
-#     face = "bold", 
+#     face = "bold",
 #     colour = "#343a40"
 #   ),
 #   plot.subtitle = element_text(
@@ -329,8 +331,11 @@ df <- base_de_dados |> tidyr::pivot_longer(
 # Alterar os niveis de genero para aparecer na ordem do grafico
 
 df <- df |> mutate(
-  Genero = factor(Genero, levels = c("Mas", "Fem")) 
-) |> dplyr::filter(Ano == 2022)
+  Genero = factor(Genero, levels = c("Mas", "Fem")),
+  Percentual = formattable::percent(Percentual,1)
+  ) |> 
+  dplyr::filter(Ano == 2022) |> 
+  dplyr::rename(`Função` = Funcao , `Gênero` = Genero )
 ```
 
 ## Somente 2022 - Percentual
@@ -342,9 +347,9 @@ df <- df |> mutate(
 
 grafico <- df %>%
   ggplot(aes(
-    x = Funcao,
+    x = `Função`,
     y = Percentual,
-    fill = Genero
+    fill = `Gênero`
   )
   ) +
   geom_bar(stat = "identity") +
@@ -445,16 +450,17 @@ df <- base_de_dados |> tidyr::pivot_longer(
 
 df <- df |> mutate(
   Genero = factor(Genero, levels = c("Mas", "Fem"))
-)|> dplyr::filter(Ano == 2022)
+)|> dplyr::filter(Ano == 2022)|> 
+  dplyr::rename(`Função` = Funcao , `Gênero` = Genero, Total = Percentual )
 
 ```
 
 ```{r graf_2022_abs}
 grafico <- df %>%
   ggplot(aes(
-    x = Funcao,
-    y = Percentual,
-    fill = Genero
+    x = `Função`,
+    y = Total,
+    fill = `Gênero`
   )
   ) +
   geom_bar(stat = "identity") +
