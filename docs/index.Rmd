@@ -1,0 +1,524 @@
+---
+title: "Observatório"
+author: "CGINF"
+date: "2023-03-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r library, include=FALSE}
+library(clipr)
+library(tidyverse)
+library(ggpol)
+library(gganimate)
+library(gifski)
+library(kableExtra)
+
+```
+
+## Gif Percentual - 2015 a 2022 
+
+```{r Planilha RLP 9 - Servidores por gênero, echo=FALSE, warning=FALSE}
+# Planilha RLP 9 - Servidores por gênero , ctrl c 
+
+#df_percentual <- read_clip_tbl() # Essa função utiliza a area de transferencia 
+#readr::write_csv2(df_percentual, "dados/df_perc.csv")
+
+#manipulacao da base
+
+# base_de_dados <- readr::read_csv2("../dados/df_perc.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+# 
+# df <- base_de_dados |> tidyr::pivot_longer(
+#   cols = dplyr::starts_with("X"),
+#   values_to = "Percentual") |> 
+#   dplyr::mutate(
+#     Ano = substr(name, 2, 5),
+#     # Percentual = readr::parse_number(
+#     #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
+#       Ano = readr::parse_number(Ano),
+#     Funcao = as.factor(Funcao),
+#     Genero = as.factor(Genero)) |> 
+#   dplyr::select(-name) |> 
+#   dplyr::mutate(
+#     Percentual = ifelse(
+#       Genero == 'Mas', Percentual * -1, Percentual
+#       )
+#     )
+# 
+# # Alterar os niveis de genero para aparecer na ordem do grafico
+# 
+# df <- df |> mutate(
+#   Genero = factor(Genero, levels = c("Mas", "Fem"))
+# )
+
+```
+
+```{r Gráfico Percentual, echo=FALSE, warning=FALSE}
+# Gráfico -----------------------------------------------------------------
+
+
+# grafico <- df %>%
+#   ggplot(aes(
+#     x = Funcao,
+#     y = Percentual,
+#     fill = Genero
+#   )
+#   ) +
+#   geom_bar(stat = "identity") +
+#   scale_fill_manual(values = c("#004580","#ef0219")) + 
+#   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
+#   coord_flip() 
+# # +
+# #   theme_minimal()
+#   # facet_share(
+#   #   ~ Genero,
+#   #   dir = "h",
+#   #   scales = "free",
+#   #   reverse_num = TRUE
+#  # )
+# 
+# 
+# 
+# grafico <- grafico + 
+#   labs(
+#     title = "Cargos de Direção e Assessoramento  2015 - 2022\n\n{closest_state}",
+#     subtitle = "\n\nGênero",
+#     y = "\n\nProporção por Gênero",
+#     caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+#   )
+# 
+# grafico <- grafico + theme(
+#   plot.background = element_blank(),
+#   axis.ticks = element_blank(),
+#   axis.title.y = element_blank(),
+#   legend.title = element_blank(),
+#   panel.background = element_blank(),
+#   panel.border = element_blank(),
+#   strip.background = element_blank(),
+#   strip.text.x = element_blank(),
+#   panel.grid.minor = element_blank(),
+#   panel.grid.major = element_blank(), 
+#   axis.text = element_text(size = 14),
+#   #legend.position = "top",
+#   legend.key.size = unit(0.75, "cm"),
+#   legend.text = element_text(
+#     size = 15,
+#     face = "bold"
+#   ),
+#   plot.title = element_text(
+#     size = 15,
+#     hjust = 0.5,
+#     face = "bold", 
+#     colour = "#343a40"
+#   ),
+#   plot.subtitle = element_text(
+#     size = 12,
+#     hjust = 0.5,
+#     face = "bold"
+#   ),
+#   axis.title.x = element_text(
+#     size = 10,
+#     face = "bold"
+#   ),
+#   plot.caption = element_text(
+#     size = 10,
+#     hjust = 0.5,
+#     face = "italic",
+#     color = "gray"
+#   )
+# )
+
+```
+
+```{r Gif Percentual, echo=FALSE, warning=FALSE}
+
+# grafico <- grafico +
+#   transition_states(
+#     Ano,
+#     transition_length = 1,
+#     state_length = 2
+#   ) +
+#   enter_fade() +
+#   exit_fade() +
+#   ease_aes('cubic-in-out')
+# 
+# animate(
+#   grafico,
+#   fps = 24,
+#   duration = 10,
+#   width = 500,
+#   height = 500,
+#   renderer = gifski_renderer("img/perc.gif")
+# )
+```
+
+
+```{r gif, echo=FALSE,fig.align='center'}
+knitr::include_graphics("../img/perc.gif")
+```
+
+## GIF Valores Absolutos - 2015 a 2022
+
+```{r Absolutos, echo=FALSE, warning=FALSE}
+# Planilha RLP 9 - Servidores por gênero , ctrl c 
+
+# df_abs <- read_clip_tbl() # Essa função utiliza a area de transferencia 
+# 
+# readr::write_csv2(df_abs, "dados/df_abs.csv")
+
+#manipulacao da base
+
+# base_de_dados <- readr::read_csv2("../dados/df_abs.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+
+
+```
+
+```{r base_absoluto, echo=FALSE, warning=FALSE}
+# df <- base_de_dados |> tidyr::pivot_longer(
+#   cols = dplyr::starts_with("X"),
+#   values_to = "Percentual") |> 
+#   dplyr::mutate(
+#     Ano = substr(name, 2, 5),
+#     # Percentual = readr::parse_number(
+#     #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
+#       Ano = readr::parse_number(Ano),
+#     Funcao = as.factor(Funcao),
+#     Genero = as.factor(Genero)) |> 
+#   dplyr::select(-name) |> 
+#   dplyr::mutate(
+#     Percentual = ifelse(
+#       Genero == 'Mas', Percentual * -1, Percentual
+#       )
+#     )
+#   
+# glimpse(df)
+# 
+# # Alterar os niveis de genero para aparecer na ordem do grafico
+# 
+# df <- df |> mutate(
+#   Genero = factor(Genero, levels = c("Mas", "Fem"))
+# )
+```
+
+```{r abs_grafico, echo=FALSE, warning=FALSE}
+# Gráfico -----------------------------------------------------------------
+
+
+# grafico <- df %>%
+#   ggplot(aes(
+#     x = Funcao,
+#     y = Percentual,
+#     fill = Genero
+#   )
+#   ) +
+#   geom_bar(stat = "identity") +
+#   scale_fill_manual(values = c("#004580","#ef0219")) + 
+#   scale_y_continuous(breaks=seq(-8000,4500,2000),labels=paste0(abs(seq(-8000,4500,2000))))+
+#   coord_flip() 
+# # +
+# #   theme_minimal()
+#   # facet_share(
+#   #   ~ Genero,
+#   #   dir = "h",
+#   #   scales = "free",
+#   #   reverse_num = TRUE
+#  # )
+# 
+# grafico <- grafico + 
+#   labs(
+#     title = "Cargos de Direção e Assessoramento  2015 - 2022\n\n{closest_state}",
+#     subtitle = "\n\nGênero",
+#     y = "\n\nProporção por Gênero",
+#     caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+#   )
+# 
+# grafico <- grafico + theme(
+#   plot.background = element_blank(),
+#   axis.ticks = element_blank(),
+#   axis.title.y = element_blank(),
+#   legend.title = element_blank(),
+#   panel.background = element_blank(),
+#   panel.border = element_blank(),
+#   strip.background = element_blank(),
+#   strip.text.x = element_blank(),
+#   panel.grid.minor = element_blank(),
+#   panel.grid.major = element_blank(), 
+#   axis.text = element_text(size = 14),
+#   #legend.position = "top",
+#   legend.key.size = unit(0.75, "cm"),
+#   legend.text = element_text(
+#     size = 15,
+#     face = "bold"
+#   ),
+#   plot.title = element_text(
+#     size = 15,
+#     hjust = 0.5,
+#     face = "bold", 
+#     colour = "#343a40"
+#   ),
+#   plot.subtitle = element_text(
+#     size = 12,
+#     hjust = 0.5,
+#     face = "bold"
+#   ),
+#   axis.title.x = element_text(
+#     size = 10,
+#     face = "bold"
+#   ),
+#   plot.caption = element_text(
+#     size = 10,
+#     hjust = 0.5,
+#     face = "italic",
+#     color = "gray"
+#   )
+# )
+```
+
+```{r gif_absoluto, echo=FALSE, warning=FALSE}
+# abs <- grafico +
+#   transition_states(
+#     Ano,
+#     transition_length = 1,
+#     state_length = 2
+#   ) +
+#   enter_fade() +
+#   exit_fade() +
+#   ease_aes('cubic-in-out')
+# 
+# animate(
+#   abs,
+#   fps = 24,
+#   duration = 10,
+#   width = 500,
+#   height = 500,
+#   renderer = gifski_renderer("img/abs.gif")
+# )
+
+```
+
+
+```{r gif_abs, echo=FALSE,fig.align='center'}
+knitr::include_graphics("../img/abs.gif")
+```
+
+```{r 2022, echo=FALSE, message=FALSE, warning=FALSE}
+
+base_de_dados <- readr::read_csv2("../dados/df_perc.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+
+df <- base_de_dados |> tidyr::pivot_longer(
+  cols = dplyr::starts_with("X"),
+  values_to = "Percentual") |>
+  dplyr::mutate(
+    Ano = substr(name, 2, 5),
+    # Percentual = readr::parse_number(
+    #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
+      Ano = readr::parse_number(Ano),
+    Funcao = as.factor(Funcao),
+    Genero = as.factor(Genero)) |>
+  dplyr::select(-name) |>
+  dplyr::mutate(
+    Percentual = ifelse(
+      Genero == 'Mas', Percentual * -1, Percentual
+      )
+    )
+
+# Alterar os niveis de genero para aparecer na ordem do grafico
+
+df <- df |> mutate(
+  Genero = factor(Genero, levels = c("Mas", "Fem")) 
+) |> dplyr::filter(Ano == 2022)
+```
+
+## Somente 2022 - Percentual
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Gráfico -----------------------------------------------------------------
+
+
+grafico <- df %>%
+  ggplot(aes(
+    x = Funcao,
+    y = Percentual,
+    fill = Genero
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#004580","#ef0219")) +
+  scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
+  coord_flip()
+# +
+#   theme_minimal()
+  # facet_share(
+  #   ~ Genero,
+  #   dir = "h",
+  #   scales = "free",
+  #   reverse_num = TRUE
+ # )
+
+
+
+grafico <- grafico +
+  labs(
+    title = "Cargos de Direção e Assessoramento - 2022",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "\n\nProporção por Gênero",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico)
+
+grafico <- grafico + theme(
+  plot.background = element_blank(),
+  axis.ticks = element_blank(),
+  axis.title.y = element_blank(),
+  legend.title = element_blank(),
+  panel.background = element_blank(),
+  panel.border = element_blank(),
+  strip.background = element_blank(),
+  strip.text.x = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),
+  axis.text = element_text(size = 14),
+  #legend.position = "top",
+  legend.key.size = unit(0.75, "cm"),
+  legend.text = element_text(
+    size = 15,
+    face = "bold"
+  ),
+  plot.title = element_text(
+    size = 15,
+    hjust = 0.5,
+    face = "bold",
+    colour = "#343a40"
+  ),
+  plot.subtitle = element_text(
+    size = 12,
+    hjust = 0.5,
+    face = "bold"
+  ),
+  axis.title.x = element_text(
+    size = 10,
+    face = "bold"
+  ),
+  plot.caption = element_text(
+    size = 10,
+    hjust = 0.5,
+    face = "italic",
+    color = "gray"
+  )
+)
+
+```
+
+## Somente 2022 - valores absolutos
+
+```{r absosultos_2022, echo=FALSE, message=FALSE, warning=FALSE}
+
+base_de_dados <- readr::read_csv2("../dados/df_abs.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+
+df <- base_de_dados |> tidyr::pivot_longer(
+  cols = dplyr::starts_with("X"),
+  values_to = "Percentual") |>
+  dplyr::mutate(
+    Ano = substr(name, 2, 5),
+    # Percentual = readr::parse_number(
+    #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
+      Ano = readr::parse_number(Ano),
+    Funcao = as.factor(Funcao),
+    Genero = as.factor(Genero)) |>
+  dplyr::select(-name) |>
+  dplyr::mutate(
+    Percentual = ifelse(
+      Genero == 'Mas', Percentual * -1, Percentual
+      )
+    )
+
+
+
+# Alterar os niveis de genero para aparecer na ordem do grafico
+
+df <- df |> mutate(
+  Genero = factor(Genero, levels = c("Mas", "Fem"))
+)|> dplyr::filter(Ano == 2022)
+
+```
+
+```{r graf_2022_abs}
+grafico <- df %>%
+  ggplot(aes(
+    x = Funcao,
+    y = Percentual,
+    fill = Genero
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#004580","#ef0219")) +
+  scale_y_continuous(breaks=seq(-8000,4500,2000),labels=paste0(abs(seq(-8000,4500,2000))))+
+  coord_flip()
+# +
+#   theme_minimal()
+  # facet_share(
+  #   ~ Genero,
+  #   dir = "h",
+  #   scales = "free",
+  #   reverse_num = TRUE
+ # )
+
+grafico <- grafico +
+  labs(
+    title = "Cargos de Direção e Assessoramento - 2022",
+    subtitle = "\n\nGênero",
+    x= "",
+    y = "\n\nTotal por Gênero",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  )
+
+plotly::ggplotly(grafico) 
+grafico <- grafico + theme(
+  plot.background = element_blank(),
+  axis.ticks = element_blank(),
+  axis.title.y = element_blank(),
+  legend.title = element_blank(),
+  panel.background = element_blank(),
+  panel.border = element_blank(),
+  strip.background = element_blank(),
+  strip.text.x = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),
+  axis.text = element_text(size = 14),
+  #legend.position = "top",
+  legend.key.size = unit(0.75, "cm"),
+  legend.text = element_text(
+    size = 15,
+    face = "bold"
+  ),
+  plot.title = element_text(
+    size = 15,
+    hjust = 0.5,
+    face = "bold",
+    colour = "#343a40"
+  ),
+  plot.subtitle = element_text(
+    size = 12,
+    hjust = 0.5,
+    face = "bold"
+  ),
+  axis.title.x = element_text(
+    size = 10,
+    face = "bold"
+  ),
+  plot.caption = element_text(
+    size = 10,
+    hjust = 0.5,
+    face = "italic",
+    color = "gray"
+  )
+)
+```
+
