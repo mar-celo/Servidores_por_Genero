@@ -157,7 +157,7 @@ library(kableExtra)
 ```
 
 
-```{r gif, echo=FALSE,fig.align='center'}
+```{r gif, echo=FALSE}
 knitr::include_graphics("../img/perc.gif")
 ```
 
@@ -303,7 +303,7 @@ knitr::include_graphics("../img/perc.gif")
 ```
 
 
-```{r gif_abs, echo=FALSE,fig.align='center'}
+```{r gif_abs, echo=FALSE}
 knitr::include_graphics("../img/abs.gif")
 ```
 
@@ -332,7 +332,7 @@ df <- base_de_dados |> tidyr::pivot_longer(
 
 df <- df |> mutate(
   Genero = factor(Genero, levels = c("Mas", "Fem")),
-  Percentual = formattable::percent(Percentual,1)
+  Percentual = formattable::percent(Percentual,0)
   ) |> 
   dplyr::filter(Ano == 2022) |> 
   dplyr::rename(`Função` = Funcao , `Gênero` = Genero )
@@ -376,7 +376,7 @@ grafico <- grafico +
     caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
   ) 
 
-plotly::ggplotly(grafico)
+plotly::ggplotly(grafico) |> plotly::layout(yaxis = list(ticksuffix = "%"))
 
 grafico <- grafico + theme(
   plot.background = element_blank(),
@@ -423,7 +423,7 @@ grafico <- grafico + theme(
 
 ## Somente 2022 - valores absolutos
 
-```{r absosultos_2022, echo=FALSE, message=FALSE, warning=FALSE}
+```{r abss_2022, echo=FALSE, message=FALSE, warning=FALSE}
 
 base_de_dados <- readr::read_csv2("../dados/df_abs.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
 
@@ -526,5 +526,99 @@ grafico <- grafico + theme(
     color = "gray"
   )
 )
+```
+
+## Alternativa 
+
+```{r absosultos_2022, echo=FALSE, message=FALSE, warning=FALSE}
+
+#dados valores absolutos
+
+abs <- readr::read_csv2("../dados/df_abs.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+
+df1 <- abs |> tidyr::pivot_longer(
+  cols = dplyr::starts_with("X"),
+  values_to = "Total") |>
+  dplyr::mutate(
+    Ano = substr(name, 2, 5),
+    # Percentual = readr::parse_number(
+    #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
+      Ano = readr::parse_number(Ano),
+    Funcao = as.factor(Funcao),
+    Genero = as.factor(Genero)) |>
+  dplyr::select(-name) |>
+  dplyr::mutate(
+    Total = ifelse(
+      Genero == 'Mas', Total * -1, Total
+      )
+    )
+
+perc <- readr::read_csv2("../dados/df_perc.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+
+df2 <- perc |> tidyr::pivot_longer(
+  cols = dplyr::starts_with("X"),
+  values_to = "Percentual") |>
+  dplyr::mutate(
+    Ano = substr(name, 2, 5),
+    # Percentual = readr::parse_number(
+    #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
+      Ano = readr::parse_number(Ano),
+    Funcao = as.factor(Funcao),
+    Genero = as.factor(Genero)) |>
+  dplyr::select(-name) |>
+  dplyr::mutate(
+    Percentual = ifelse(
+      Genero == 'Mas', Percentual * -1, Percentual
+      )
+    )
+
+
+dados <- dplyr::bind_cols(df1, df2) |> select(Funcao =  Funcao...1, 
+                                    Genero = Genero...2,
+                                     Ano = Ano...4,  
+                                     Total, Percentual
+                                     )
+
+
+# Alterar os niveis de genero para aparecer na ordem do grafico
+
+dados <- dados |> mutate(
+  Genero = factor(Genero, levels = c("Mas", "Fem"))
+)|> dplyr::filter(Ano == 2022)|> 
+  dplyr::rename(`Função` = Funcao , `Gênero` = Genero)
+```
+
+```{r}
+grafico <- dados %>%
+  ggplot(aes(
+    x = `Função`,
+    y = Total,
+    fill = `Gênero`
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#004580","#ef0219")) +
+  scale_y_continuous(breaks=seq(-8000,4500,2000),labels=paste0(abs(seq(-8000,4500,2000))))+
+  geom_label(
+    aes(
+      y = Total,
+      label = formattable::percent(abs(Percentual), 0)   #str_glue("{Percentual} %")
+    ),
+    size = 3,
+    alpha = 0.09, 
+    hjust = 0.5
+  ) +
+  coord_flip() +theme_minimal()
+
+grafico <- grafico +
+  labs(
+    title = "Cargos de Direção e Assessoramento - 2022",
+    subtitle = "\n\nGênero",
+    x= "",
+    y = "\n\nTotal por Gênero",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  )
+
+grafico
 ```
 
