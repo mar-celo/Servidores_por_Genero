@@ -588,12 +588,12 @@ dados <- dados |> mutate(
   dplyr::rename(`Função` = Funcao , `Gênero` = Genero)
 ```
 
-```{r}
+```{r alternativa, echo=FALSE, message=FALSE, warning=FALSE}
 grafico <- dados %>%
   ggplot(aes(
     x = `Função`,
     y = Total,
-    fill = `Gênero`
+    fill = `Gênero`, text = formattable::percent(abs(Percentual), 0)
   )
   ) +
   geom_bar(stat = "identity") +
@@ -619,6 +619,6 @@ grafico <- grafico +
     caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
   )
 
-grafico
+plotly::ggplotly(grafico)
 ```
 
