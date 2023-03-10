@@ -593,9 +593,8 @@ grafico <- dados %>%
   ggplot(aes(
     x = `Função`,
     y = Total,
-    fill = `Gênero`, text = formattable::percent(abs(Percentual), 0)
-  )
-  ) +
+    fill = `Gênero`, 
+    text =paste("Percentual:", formattable::percent(abs(Percentual), 0)))) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#004580","#ef0219")) +
   scale_y_continuous(breaks=seq(-8000,4500,2000),labels=paste0(abs(seq(-8000,4500,2000))))+
