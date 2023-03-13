@@ -2,7 +2,10 @@
 title: "Observatório"
 author: "CGINF"
 date: "2023-03-09"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -624,7 +627,7 @@ plotly::ggplotly(grafico)
 ## Etnia
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r ETNIA, echo=FALSE, message=FALSE, warning=FALSE}
 etnia <- readr::read_csv2("../dados/tabula-Historico-Etnia.csv") 
 
 # etnia <- etnia |> dplyr::mutate(
@@ -666,7 +669,7 @@ graf_etnia
 
 ## PCD
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r PCD, echo=FALSE, message=FALSE, warning=FALSE}
  # library(clipr)
 # 
 # pcd <- clipr::read_clip_tbl() |> janitor::clean_names()
