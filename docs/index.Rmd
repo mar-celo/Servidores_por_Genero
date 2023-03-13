@@ -636,10 +636,10 @@ library(echarts4r)
 graf_etnia <- etnia  |> 
   e_charts(x = Data)  |> 
   echarts4r::e_tooltip(
-    # formatter = htmlwidgets::JS("function(params){
-    #                             return(
-    #                             params.value[0] + 
-    #                             '<br />'+params.value[1]*100 + '%')}")
+    formatter = htmlwidgets::JS("function(params){
+                                return(
+                                params.value[0] +
+                                '<br />'+params.value[1]*100 + '%')}")
     ) |> 
   e_x_axis(Data, axisPointer = list(
     show = TRUE,
@@ -655,7 +655,7 @@ graf_etnia <- etnia  |>
     )) %>%
   #echarts4r::e_theme("gray") %>%
   e_line(`% Pretos Pardos Negros`,  legend = FALSE) %>%
-  e_datazoom(show = TRUE, toolbox = FALSE) %>%
+  #e_datazoom(show = TRUE, toolbox = FALSE) %>%
   e_axis_labels(y = "Percentual Etnia") |> 
   echarts4r::e_legend(right = 0) |> 
   echarts4r::e_theme_custom('{"color":["#004580","#ef0219"]}') 
@@ -678,11 +678,11 @@ pcd <- readr::read_csv2("../dados/pcd.csv") |>
 
 graf_pcd <- pcd  |>
   e_charts(x = Data)  |>
-  echarts4r::e_tooltip(
-    # formatter = htmlwidgets::JS("function(params){
-    #                             return(
-    #                             params.value[0] +
-    #                             '<br />'+params.value[1]*100 + '%')}")
+  echarts4r::e_tooltip(trigger = "axis",
+    formatter = htmlwidgets::JS("function(params){
+                                return(
+                                params.value[0] +
+                                '<br />'+params.value[1]*100 + '%')}")
     ) |>
   e_x_axis(Data, axisPointer = list(
     show = TRUE,
@@ -699,7 +699,7 @@ graf_pcd <- pcd  |>
     )) %>%
   #echarts4r::e_theme("gray") %>%
   e_line(`% c/Deficiência`,  legend = FALSE) %>%
-  e_datazoom(show = TRUE, toolbox = FALSE) %>%
+ # e_datazoom(show = TRUE, toolbox = FALSE) %>%
   e_axis_labels(y = "Percentual PCD") |>
   echarts4r::e_legend(right = 0) |>
   echarts4r::e_theme_custom('{"color":["#004580","#ef0219"]}')
