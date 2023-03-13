@@ -667,7 +667,7 @@ graf_etnia
 ## PCD
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-# library(clipr)
+ # library(clipr)
 # 
 # pcd <- clipr::read_clip_tbl() |> janitor::clean_names()
 
@@ -690,7 +690,7 @@ graf_pcd <- pcd  |>
   )) %>%
   e_y_axis(
     nameLocation = "end",
-    formatter = e_axis_formatter("percent", digits = 0),
+    formatter = e_axis_formatter("percent", digits = 1),
     min = 0,
     max = 0.015,
     nameTextStyle = list(
