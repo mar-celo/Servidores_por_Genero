@@ -628,7 +628,7 @@ plotly::ggplotly(grafico)
 
 
 ```{r ETNIA, echo=FALSE, message=FALSE, warning=FALSE}
-etnia <- readr::read_csv2("../dados/tabula-Historico-Etnia.csv") 
+etnia <- readr::read_csv2("../dados/tabula-Historico-Etnia.csv", col_types = c(Data = "c") )
 
 # etnia <- etnia |> dplyr::mutate(
 #   `% Pretos Pardos Negros` =formattable::percent(`% Pretos Pardos Negros`, 0)
@@ -638,12 +638,7 @@ etnia <- readr::read_csv2("../dados/tabula-Historico-Etnia.csv")
 library(echarts4r)
 graf_etnia <- etnia  |> 
   e_charts(x = Data)  |> 
-  echarts4r::e_tooltip(
-    # formatter = htmlwidgets::JS("function(params){
-    #                             return(
-    #                             params.value[0] + 
-    #                             '<br />'+params.value[1]*100 + '%')}")
-    ) |> 
+  echarts4r::e_tooltip() |> 
   e_x_axis(Data, axisPointer = list(
     show = TRUE,
     label = list(show = FALSE)
@@ -657,40 +652,86 @@ graf_etnia <- etnia  |>
       fontWeight = "bold"
     )) %>%
   #echarts4r::e_theme("gray") %>%
-  e_line(`% Pretos Pardos Negros`,  legend = FALSE) %>%
+  e_bar(`% Pretos Pardos Negros`,  legend = FALSE) %>%
   e_datazoom(show = TRUE, toolbox = FALSE) %>%
   e_axis_labels(y = "Percentual Etnia") |> 
   echarts4r::e_legend(right = 0) |> 
   echarts4r::e_theme_custom('{"color":["#004580","#ef0219"]}') 
   
-graf_etnia
+#graf_etnia
 
 ```
 
-## PCD
+Agrupamento de etnias:
+
+1. Predos Pardos e Negros 
+2. Indígenas
+3. Demais Etnias
+
+
+```{r , echo=FALSE, message=FALSE, warning=FALSE}
+agrupados <- etnia |> janitor::clean_names() |> 
+  dplyr::mutate(
+  `Demais Etnias` = round((branca + amarela + n_o_informado) / total_geral,3), 
+  `Indígenas` = round(indigena/ total_geral, 3)
+) |> select(data, `Pretos-Pardos-Negros` = percent_pretos_pardos_negros, `Demais Etnias`,  Indígenas)  
+  
+agrupados |>
+  e_charts(x = data) |>
+  echarts4r::e_tooltip(
+    formatter = e_tooltip_item_formatter("percent",
+      digits = 1)
+  ) |>
+  # e_x_axis(data, axisPointer = list(
+  #   show = TRUE,
+  #   label = list(show = FALSE)
+  # )) %>%
+  e_y_axis(
+    nameLocation = "end",
+    formatter = e_axis_formatter("percent", digits = 0),
+    #max = 1,
+    nameTextStyle = list(
+      color = "#666666",
+      fontWeight = "bold"
+    )
+  ) %>%
+  # echarts4r::e_theme("gray") %>%
+  e_bar(`Demais Etnias`, legend = FALSE, stack = "grp") |>
+  e_bar(`Pretos-Pardos-Negros`, legend = FALSE, stack = "grp") |>
+  e_bar(Indígenas, legend = FALSE, stack = "grp") |>
+  e_datazoom(show = TRUE, toolbox = FALSE) %>%
+  # e_axis_labels(y = "Percentual Etnia") |>
+  echarts4r::e_legend(right = 0) |>
+  echarts4r::e_title(text = "Etnia") |>
+  echarts4r::e_theme_custom('{"color":["#004580","#ef0219", "#a38a17"]}')
+```
+
+## PCD Indígenas
 
 ```{r PCD, echo=FALSE, message=FALSE, warning=FALSE}
  # library(clipr)
 # 
 # pcd <- clipr::read_clip_tbl() |> janitor::clean_names()
 
-pcd <- readr::read_csv2("../dados/pcd.csv") |>
+pcd <- readr::read_csv2("../dados/pcd.csv", col_types = c(Data = "c")) |>
   dplyr::mutate(
-  `% c/Deficiência` = Percentual
+  `c/Deficiência` = Percentual
 )
 
 graf_pcd <- pcd  |>
   e_charts(x = Data)  |>
   echarts4r::e_tooltip(
+    formatter = e_tooltip_item_formatter("percent",
+                                         digits = 1)
     # formatter = htmlwidgets::JS("function(params){
     #                             return(
     #                             params.value[0] +
     #                             '<br />'+params.value[1]*100 + '%')}")
     ) |>
-  e_x_axis(Data, axisPointer = list(
-    show = TRUE,
-    label = list(show = FALSE)
-  )) %>%
+  # e_x_axis(Data, axisPointer = list(
+  #   show = TRUE,
+  #   label = list(show = FALSE)
+  # )) %>%
   e_y_axis(
     nameLocation = "end",
     formatter = e_axis_formatter("percent", digits = 1),
@@ -699,14 +740,17 @@ graf_pcd <- pcd  |>
     nameTextStyle = list(
       color = "#666666",
       fontWeight = "bold"
-    )) %>%
+    )) |> 
   #echarts4r::e_theme("gray") %>%
-  e_line(`% c/Deficiência`,  legend = FALSE) %>%
+  e_bar(`c/Deficiência`,  legend = FALSE) %>%
   e_datazoom(show = TRUE, toolbox = FALSE) %>%
-  e_axis_labels(y = "Percentual PCD") |>
+  #e_axis_labels(y = "Percentual PCD") |>
+  echarts4r::e_title(text = "PCD") |>
   echarts4r::e_legend(right = 0) |>
-  echarts4r::e_theme_custom('{"color":["#004580","#ef0219"]}')
+  echarts4r::e_theme_custom('{"color":["#004580","#ef0219", "#ffd700"]}')
 
 graf_pcd
 ```
+
+
 
