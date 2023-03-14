@@ -706,7 +706,7 @@ agrupados |>
   echarts4r::e_theme_custom('{"color":["#004580","#ef0219", "#a38a17"]}')
 ```
 
-## PCD Indígenas
+## PCD - Gráfico de barras
 
 ```{r PCD, echo=FALSE, message=FALSE, warning=FALSE}
  # library(clipr)
