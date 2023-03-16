@@ -20,6 +20,7 @@ library(ggpol)
 library(gganimate)
 library(gifski)
 library(kableExtra)
+library(echarts4r)
 
 ```
 
@@ -358,7 +359,8 @@ grafico <- df %>%
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#004580","#ef0219")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
-  coord_flip()
+  coord_flip()+
+  theme_minimal()
 # +
 #   theme_minimal()
   # facet_share(
@@ -658,7 +660,7 @@ graf_etnia <- etnia  |>
   echarts4r::e_legend(right = 0) |> 
   echarts4r::e_theme_custom('{"color":["#004580","#ef0219"]}') 
   
-#graf_etnia
+graf_etnia
 
 ```
 
@@ -688,7 +690,7 @@ agrupados |>
   # )) %>%
   e_y_axis(
     nameLocation = "end",
-    formatter = e_axis_formatter("percent", digits = 0),
+    formatter = e_axis_formatter("percent", digits = 1),
     #max = 1,
     nameTextStyle = list(
       color = "#666666",
@@ -712,14 +714,27 @@ agrupados |>
  # library(clipr)
 # 
 # pcd <- clipr::read_clip_tbl() |> janitor::clean_names()
-
+library(echarts4r)
 pcd <- readr::read_csv2("../dados/pcd.csv", col_types = c(Data = "c")) |>
+  janitor::clean_names() |> 
   dplyr::mutate(
-  `c/Deficiência` = Percentual
+  `c/Deficiência` = percentual,
+  Total = c_defici_u_fffd_ncia_total
+  
 )
 
+formatar_numero_br <- function(serie) {
+  htmlwidgets::JS(
+    glue::glue(
+      "function(params) {return Intl.NumberFormat('pt-BR', { style: 'decimal'}).format(params.value[{{serie}}]);}",
+      .open = "{{",
+      .close = "}}"
+    )
+  )
+}
+
 graf_pcd <- pcd  |>
-  e_charts(x = Data)  |>
+  e_charts(x = data)  |>
   echarts4r::e_tooltip(
     formatter = e_tooltip_item_formatter("percent",
                                          digits = 1)
@@ -728,9 +743,9 @@ graf_pcd <- pcd  |>
     #                             params.value[0] +
     #                             '<br />'+params.value[1]*100 + '%')}")
     ) |>
-  # e_x_axis(Data, axisPointer = list(
+  # e_x_axis(data, axisPointer = list(
   #   show = TRUE,
-  #   label = list(show = FALSE)
+  #   label = list(show = TRUE)
   # )) %>%
   e_y_axis(
     nameLocation = "end",
@@ -743,8 +758,10 @@ graf_pcd <- pcd  |>
     )) |> 
   #echarts4r::e_theme("gray") %>%
   e_bar(`c/Deficiência`,  legend = FALSE) %>%
+  echarts4r::e_scatter(Total) |> 
   e_datazoom(show = TRUE, toolbox = FALSE) %>%
   #e_axis_labels(y = "Percentual PCD") |>
+  e_labels(formatter = formatar_numero_br(2)) |>
   echarts4r::e_title(text = "PCD") |>
   echarts4r::e_legend(right = 0) |>
   echarts4r::e_theme_custom('{"color":["#004580","#ef0219", "#ffd700"]}')
