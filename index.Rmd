@@ -7,6 +7,7 @@ output:
     css: "style.css"
     theme: Tactile
     highlight: github
+    toc: true # ou yes
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -540,7 +541,7 @@ Tel: (61) 2020-1179 E-mail:
 
 
 Outros gráficos  
-## Origem Étnica
+Origem Étnica
 
 ```{r , echo=FALSE, message=FALSE, warning=FALSE}
 e_common(font_family = "helvetica", theme = "westeros")
@@ -577,7 +578,7 @@ tab_final |>
   e_x_axis(axisLabel = list(rotate = 45))
 ```
 
-## PCD
+PCD
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 tab_final |>
@@ -600,7 +601,7 @@ tab_final |>
   
 ```
 
-## Estado Civil
+Estado Civil
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 tab_final |>
@@ -623,7 +624,7 @@ tab_final |>
 ```
 
 
-## Escolaridade
+Escolaridade
 
 Talvez criar uma categoria outras e renomear 
 
@@ -651,7 +652,7 @@ tab_final |>
 ```
 
 
-## Alternativa de treemap
+Alternativa de treemap
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -693,7 +694,7 @@ universe |>
 ```
 
 
-## Quantidade de Filhos
+Quantidade de Filhos
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 tab_final |>
@@ -714,7 +715,7 @@ tab_final |>
   )
 ```
 
-## Idade
+Idade
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 tab_final |>
@@ -739,7 +740,7 @@ tab_final |>
   #e_x_axis(axisLabel = list(rotate = 90))
 ```
 
-## Remuneração
+Remuneração
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 tab_final |>
