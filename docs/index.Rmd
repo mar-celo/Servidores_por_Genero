@@ -358,7 +358,9 @@ grafico <- df %>%
   ) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#004580","#ef0219")) +
-  scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), " %"))+
   coord_flip()+
   theme_minimal()
 # +
@@ -602,16 +604,20 @@ grafico <- dados %>%
     text =paste("Percentual:", formattable::percent(abs(Percentual), 0)))) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#004580","#ef0219")) +
-  scale_y_continuous(breaks=seq(-8000,4500,2000),labels=paste0(abs(seq(-8000,4500,2000))))+
-  geom_label(
-    aes(
-      y = Total,
-      label = formattable::percent(abs(Percentual), 0)   #str_glue("{Percentual} %")
-    ),
-    size = 3,
-    alpha = 0.09, 
-    hjust = 0.5
-  ) +
+  scale_y_continuous(breaks=seq(-7000,7000,2000),
+                     labels=paste0(abs(seq(-7000,7000,2000))),
+                     limits = c(-7000, 7000)
+                     ) +
+
+  # geom_label(
+  #   aes(
+  #     y = Total,
+  #     label = formattable::percent(abs(Percentual), 0)   #str_glue("{Percentual} %")
+  #   ),
+  #   size = 3,
+  #   alpha = 0.09, 
+  #   hjust = 0.5
+  # ) +
   coord_flip() +theme_minimal()
 
 grafico <- grafico +

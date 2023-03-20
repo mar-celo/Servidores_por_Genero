@@ -1,7 +1,7 @@
 ---
-title: "Servidores classificados por gênero"
-subtitle: "Poder Executivo Federal"
-date: "`r format(Sys.time(), '%d %B %Y')`"
+title: "Relatórios Gerenciais"
+subtitle: "Servidores classificados por gênero"
+date: "`r format(Sys.time(), '%d de %B %Y')`"
 output:
   prettydoc::html_pretty:
     css: "style.css"
@@ -61,7 +61,7 @@ Federal Civil.
 
 ```{r echo=FALSE, warning=FALSE}
 library(readxl)
-dados <- read_excel("dados/dados.xlsx") |> janitor::clean_names()
+dados <- read_excel("dados/dados.xlsx") 
 knitr::kable(dados)
 ```
 
@@ -94,26 +94,27 @@ formatar_numero_br <- function(serie) {
 
 grafico1  |> 
   e_charts(x = Ano, timeline = FALSE)  |>  
-  e_bar(Homens, legend = FALSE) |> 
-  e_bar(Mulheres, legend = FALSE) |> 
-  e_line(`% Mulheres `, y_index = 1, legend = FALSE) |> 
-  e_line(`% Homens `, y_index = 1, legend = FALSE)  |> 
+#  e_bar(Homens, legend = FALSE) |> 
+#  e_bar(Mulheres, legend = FALSE) |> 
+  e_line(`% Mulheres `, y_index = 0, legend = FALSE) |> 
+  e_line(`% Homens `, y_index = 0, legend = FALSE)  |> 
   e_y_axis(
-    nameLocation = "end",index = 1,
+    nameLocation = "end",index = 0,
     formatter = e_axis_formatter("percent", digits = 1),
-    #max = 1,
+    min = 0.3,
     nameTextStyle = list(
       color = "#666666",
       fontWeight = "bold"
     ) 
   )|> 
-  e_y_axis(
-    formatter = e_axis_formatter("decimal", locale = "pt-BR")
-  ) |>
-  echarts4r::e_tooltip("axis") |> # tooltip
+  # e_y_axis(
+  #   formatter = e_axis_formatter("decimal", locale = "pt-BR")
+  # ) |>
+  echarts4r::e_tooltip(formatter = e_tooltip_item_formatter("percent")) |> # tooltip
   echarts4r::e_title("Ocupação de cargos por sexo", "Poder Executivo Federal") |>  
   echarts4r::e_legend(right = 0) |> 
-  echarts4r::e_locale("pt-BR")
+  echarts4r::e_locale("pt-BR") |> 
+  echarts4r::e_theme_custom('{"color":["#ffaf51", "#004580"]}')
 ```
 _Fonte: Elaboração Própria – dados: dezembro/2022_
 
@@ -169,7 +170,8 @@ df <-  tabela2 %>% left_join(uf_sigla)
     projection = "equirectangular"
   ) %>%
   d3plusColor(value = "Perc_Feminino",
-              heatmap = RColorBrewer::brewer.pal(n = 6, name = "PuRd")) %>%
+              heatmap = RColorBrewer::brewer.pal(n = 6, name = 
+                                                   "OrRd")) %>%
   d3plusText("uf") %>%
   d3plusTooltip(value = c("Feminino",  
                           "Masculino", 
@@ -290,7 +292,7 @@ grafico <- df %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#004580","#ffd700")) +
+  scale_fill_manual(values = c("#004580","#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
   coord_flip()+
   theme_minimal()
@@ -342,7 +344,7 @@ grafico <- df %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#004580","#ffd700")) +
+  scale_fill_manual(values = c("#004580","#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
   coord_flip()+
   theme_minimal()
@@ -394,7 +396,7 @@ grafico <- df %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#004580","#ffd700")) +
+  scale_fill_manual(values = c("#004580","#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
   coord_flip()+
   theme_minimal()
@@ -445,7 +447,7 @@ grafico <- df %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#004580","#ffd700")) +
+  scale_fill_manual(values = c("#004580","#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
   coord_flip()+
   theme_minimal()
@@ -514,15 +516,15 @@ resultado de atualização de base de dados.
 
 ## 5. Institucional
 
-Eduardo Bergamaschi Felizola - Secretário
+- Sergio Eduardo Arbulu Mendonça- Secretário 
+- Antônio Fiuza de Sousa Landim – Diretor 
+- Mirian Lucia Bittencourt Guimarães – Coordenadora-Geral 
 
-Antônio Fuiza de Sousa Landim -- Diretor
 
-Mirian Lucia Bittencourt Guimarães -- Coordenadora-Geral
-
-Equipe técnica
-
--   Luana Correa Silva Rodrigues
+  Equipe técnica 
+- Luana Correa Silva Rodrigues 
+- Luciana Santos Ferreira 
+- Marcelo Rodrigues Ribeiro
 
 ## 6. Contato
 
