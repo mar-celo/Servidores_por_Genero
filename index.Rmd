@@ -1,9 +1,10 @@
 ---
-title: "Servidores classificados por gênero"
-subtitle: "Poder Executivo Federal"
-date: "`r format(Sys.time(), '%d %B %Y')`"
+title: "Relatórios Gerenciais"
+subtitle: "Servidores classificados por gênero"
+date: "`r format(Sys.time(), '%d de %B %Y')`"
 output:
   prettydoc::html_pretty:
+    fig_caption: true
     css: "style.css"
     theme: Tactile
     highlight: github
@@ -61,8 +62,8 @@ Federal Civil.
 
 ```{r echo=FALSE, warning=FALSE}
 library(readxl)
-dados <- read_excel("dados/dados.xlsx") |> janitor::clean_names()
-knitr::kable(dados)
+dados <- read_excel("dados/dados.xlsx") 
+knitr::kable(dados, caption = 'Tabela 1. Comparativo dos servidores por sexo')
 ```
 
 Com base nos dados do gráfico, podemos observar um índice médio em torno
@@ -94,26 +95,27 @@ formatar_numero_br <- function(serie) {
 
 grafico1  |> 
   e_charts(x = Ano, timeline = FALSE)  |>  
-  e_bar(Homens, legend = FALSE) |> 
-  e_bar(Mulheres, legend = FALSE) |> 
-  e_line(`% Mulheres `, y_index = 1, legend = FALSE) |> 
-  e_line(`% Homens `, y_index = 1, legend = FALSE)  |> 
+#  e_bar(Homens, legend = FALSE) |> 
+#  e_bar(Mulheres, legend = FALSE) |> 
+  e_line(`% Mulheres `, y_index = 0, legend = FALSE) |> 
+  e_line(`% Homens `, y_index = 0, legend = FALSE)  |> 
   e_y_axis(
-    nameLocation = "end",index = 1,
+    nameLocation = "end",index = 0,
     formatter = e_axis_formatter("percent", digits = 1),
-    #max = 1,
+    min = 0.3,
     nameTextStyle = list(
       color = "#666666",
       fontWeight = "bold"
     ) 
   )|> 
-  e_y_axis(
-    formatter = e_axis_formatter("decimal", locale = "pt-BR")
-  ) |>
-  echarts4r::e_tooltip("axis") |> # tooltip
+  # e_y_axis(
+  #   formatter = e_axis_formatter("decimal", locale = "pt-BR")
+  # ) |>
+  echarts4r::e_tooltip(formatter = e_tooltip_item_formatter("percent")) |> # tooltip
   echarts4r::e_title("Ocupação de cargos por sexo", "Poder Executivo Federal") |>  
   echarts4r::e_legend(right = 0) |> 
-  echarts4r::e_locale("pt-BR")
+  echarts4r::e_locale("pt-BR") |> 
+  echarts4r::e_theme_custom('{"color":["#ffaf51", "#004580"]}')
 ```
 _Fonte: Elaboração Própria – dados: dezembro/2022_
 
@@ -132,7 +134,7 @@ com 40,3% de mulheres
 
 
 
-```{r echo=FALSE, fig.align='right', message=FALSE, warning=FALSE}
+```{r echo=FALSE, fig.align='center', message=FALSE, warning=FALSE}
 library(D3plusR)
 tabela2 <- read_excel("dados/dados.xlsx", sheet = "Planilha1")
 
@@ -169,7 +171,8 @@ df <-  tabela2 %>% left_join(uf_sigla)
     projection = "equirectangular"
   ) %>%
   d3plusColor(value = "Perc_Feminino",
-              heatmap = RColorBrewer::brewer.pal(n = 6, name = "PuRd")) %>%
+              heatmap = RColorBrewer::brewer.pal(n = 6, name = 
+                                                   "OrRd")) %>%
   d3plusText("uf") %>%
   d3plusTooltip(value = c("Feminino",  
                           "Masculino", 
@@ -196,7 +199,7 @@ Posteriormente, foi publicado o Decreto nº 10.829, de 5 de outubro de 2021, por
 ```{r echo=FALSE}
 tabela3 <- read_excel("dados/dados.xlsx", sheet = "Planilha2")
 
-knitr::kable(tabela3)
+knitr::kable(tabela3, caption = 'Tabela 2. Anexo III do Decreto nº10.829, de 5 de outubro de 2021')
 ```
 
 Em seguida, vamos observar a disposição dos ocupantes de cargos e
@@ -211,7 +214,7 @@ Natureza especial, dentre outros.
 ```{r, echo=FALSE, results='asis'}
 tabela4 <- read_excel("dados/dados.xlsx", sheet = "Planilha3")
 
-knitr::kable(tabela4)
+knitr::kable(tabela4, caption = 'Tabela 3. Cargos e funções com características de Direção e Assessoramento')
 ```
 
 Vê-se que o índice médio de ocupação de mulheres girou em torno de 39,3% entre os anos de 2010 e 2022, enquanto o percentual de homens foi de 60,7%. 
@@ -221,13 +224,13 @@ Vamos desmembrar os dados mencionados no quadro acima, relacionados, apenas, aos
 ```{r echo=FALSE}
 tabela5 <- read_excel("dados/dados.xlsx", sheet = "Planilha4")
 
-knitr::kable(tabela5)
+knitr::kable(tabela5, caption = 'Tabela 4. Ocupação de cargos de Direção e Assessoramento Superiores por nível e por sexo*')
 ```
 
 ```{r echo=FALSE}
 tabela6 <- read_excel("dados/dados.xlsx", sheet = "Planilha5")
 
-knitr::kable(tabela6)
+knitr::kable(tabela6, caption = 'Tabela 5. Percentual de ocupação de cargos de Direção e Assessoramento por nível e por sexo')
 ```
 _Fonte: Painel Estatístico de Pessoal – Dezembro/2022_ 
 
@@ -290,7 +293,7 @@ grafico <- df %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#004580","#ffd700")) +
+  scale_fill_manual(values = c("#004580","#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
   coord_flip()+
   theme_minimal()
@@ -342,7 +345,7 @@ grafico <- df %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#004580","#ffd700")) +
+  scale_fill_manual(values = c("#004580","#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
   coord_flip()+
   theme_minimal()
@@ -394,7 +397,7 @@ grafico <- df %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#004580","#ffd700")) +
+  scale_fill_manual(values = c("#004580","#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
   coord_flip()+
   theme_minimal()
@@ -445,7 +448,7 @@ grafico <- df %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#004580","#ffd700")) +
+  scale_fill_manual(values = c("#004580","#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
   coord_flip()+
   theme_minimal()
@@ -480,7 +483,7 @@ Vamos observar ainda a disposição dos ocupantes de Funções e Gratificações
 ```{r echo=FALSE}
 tabela7 <- read_excel("dados/dados.xlsx", sheet = "Planilha6")
 
-knitr::kable(tabela7)
+knitr::kable(tabela7, caption = 'Tabela 7. Funções e Gratificações Técnicas')
 ```
 
 Quanto à ocupação de Funções e Gratificações Técnicas, é possível observar um índice médio de ocupação pelas mulheres entre o ano de 2010 e 2022 em torno de 43,6%; enquanto o de homens foi em torno de 56,4%. 
@@ -514,15 +517,15 @@ resultado de atualização de base de dados.
 
 ## 5. Institucional
 
-Eduardo Bergamaschi Felizola - Secretário
+- Sergio Eduardo Arbulu Mendonça- Secretário 
+- Antônio Fiuza de Sousa Landim – Diretor 
+- Mirian Lucia Bittencourt Guimarães – Coordenadora-Geral 
 
-Antônio Fuiza de Sousa Landim -- Diretor
 
-Mirian Lucia Bittencourt Guimarães -- Coordenadora-Geral
-
-Equipe técnica
-
--   Luana Correa Silva Rodrigues
+  Equipe técnica 
+- Luana Correa Silva Rodrigues 
+- Luciana Santos Ferreira 
+- Marcelo Rodrigues Ribeiro
 
 ## 6. Contato
 
