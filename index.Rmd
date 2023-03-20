@@ -63,11 +63,8 @@ Federal Civil.
 ```{r echo=FALSE, warning=FALSE}
 library(readxl)
 dados <- read_excel("dados/dados.xlsx") 
-<<<<<<< HEAD
+
 knitr::kable(dados, caption = 'Tabela 1. Comparativo dos servidores por sexo')
-=======
-knitr::kable(dados)
->>>>>>> cf0fa9ed737a8499dc42abeb7f7a06ddd95e1c39
 ```
 
 Com base nos dados do gráfico, podemos observar um índice médio em torno
