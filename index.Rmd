@@ -295,7 +295,9 @@ grafico <- df %>%
   ) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#004580","#ffaf51")) +
-  scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
   coord_flip()+
   theme_minimal()
 # +
@@ -347,7 +349,9 @@ grafico <- df %>%
   ) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#004580","#ffaf51")) +
-  scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
   coord_flip()+
   theme_minimal()
 # +
@@ -399,7 +403,9 @@ grafico <- df %>%
   ) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#004580","#ffaf51")) +
-  scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
   coord_flip()+
   theme_minimal()
 # +
@@ -450,7 +456,9 @@ grafico <- df %>%
   ) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#004580","#ffaf51")) +
-  scale_y_continuous(breaks=seq(-1,1,0.25),labels=paste0(abs(seq(-1,1,0.25)), " %"))+
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
   coord_flip()+
   theme_minimal()
 # +
