@@ -1,7 +1,7 @@
 ---
 title: "Relatórios Gerenciais"
 subtitle: "Servidores classificados por gênero"
-date: "`r format(Sys.time(), '%d de %B %Y')`"
+#date: "`r format(Sys.time(), '%d de %B %Y')`"
 output:
   prettydoc::html_pretty:
     fig_caption: true
@@ -552,230 +552,230 @@ Tel: (61) 2020-1179 E-mail:
 
 
 
-Outros gráficos  
-Origem Étnica
+<!-- Outros gráficos   -->
+<!-- Origem Étnica -->
 
-```{r , echo=FALSE, message=FALSE, warning=FALSE}
-e_common(font_family = "helvetica", theme = "westeros")
-formatar_numero_br <- function(serie) {
-  htmlwidgets::JS(
-    glue::glue(
-      "function(params) {return Intl.NumberFormat('pt-BR', { style: 'decimal'}).format(params.value[{{serie}}]);}",
-      .open = "{{",
-      .close = "}}"
-    )
-  )
-}
+<!-- ```{r , echo=FALSE, message=FALSE, warning=FALSE} -->
+<!-- e_common(font_family = "helvetica", theme = "westeros") -->
+<!-- formatar_numero_br <- function(serie) { -->
+<!--   htmlwidgets::JS( -->
+<!--     glue::glue( -->
+<!--       "function(params) {return Intl.NumberFormat('pt-BR', { style: 'decimal'}).format(params.value[{{serie}}]);}", -->
+<!--       .open = "{{", -->
+<!--       .close = "}}" -->
+<!--     ) -->
+<!--   ) -->
+<!-- } -->
 
-tab_final <- readxl::read_excel("dados/Mulheres_FINAL v2.xlsx", sheet = "FINAL")|> janitor::clean_names()
-  
-tab_final |>
-  count(Etnia = cor_origem_etnica, name = "Qtde")|> 
-  arrange(desc(Qtde)) |> 
-  e_charts(x = Etnia, timeline = FALSE)  |>  
-  e_bar(Qtde, legend = FALSE) |> 
-  e_tooltip("item") |>
-  #e_tooltip(formatter = formatar_numero_br(1)) |>
-  e_labels(fontSize = 12,
-           distance = 10,
-           formatter = formatar_numero_br(1)) |> # tooltip
-  echarts4r::e_title("Origem Étnica - Sexo Feminino", "Poder Executivo Federal") |>  
-  #echarts4r::e_legend(right = 0) |> 
-  echarts4r::e_locale(locale = "PT-br") |> 
-  e_format_y_axis(
-    suffix = "",
-    prefix = "",
-    formatter = e_axis_formatter(locale = "PT", digits = 0)
-  ) |> 
-  e_x_axis(axisLabel = list(rotate = 45))
-```
+<!-- tab_final <- readxl::read_excel("dados/Mulheres_FINAL v2.xlsx", sheet = "FINAL")|> janitor::clean_names() -->
 
-PCD
+<!-- tab_final |> -->
+<!--   count(Etnia = cor_origem_etnica, name = "Qtde")|>  -->
+<!--   arrange(desc(Qtde)) |>  -->
+<!--   e_charts(x = Etnia, timeline = FALSE)  |>   -->
+<!--   e_bar(Qtde, legend = FALSE) |>  -->
+<!--   e_tooltip("item") |> -->
+<!--   #e_tooltip(formatter = formatar_numero_br(1)) |> -->
+<!--   e_labels(fontSize = 12, -->
+<!--            distance = 10, -->
+<!--            formatter = formatar_numero_br(1)) |> # tooltip -->
+<!--   echarts4r::e_title("Origem Étnica - Sexo Feminino", "Poder Executivo Federal") |>   -->
+<!--   #echarts4r::e_legend(right = 0) |>  -->
+<!--   echarts4r::e_locale(locale = "PT-br") |>  -->
+<!--   e_format_y_axis( -->
+<!--     suffix = "", -->
+<!--     prefix = "", -->
+<!--     formatter = e_axis_formatter(locale = "PT", digits = 0) -->
+<!--   ) |>  -->
+<!--   e_x_axis(axisLabel = list(rotate = 45)) -->
+<!-- ``` -->
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-tab_final |>
-  count(PCD = pcd, name = "Qtde")|> 
-  arrange(desc(Qtde)) |> 
-  e_charts(x = PCD, timeline = FALSE)  |>  
-  e_bar(Qtde, legend = FALSE) |> 
-  e_tooltip("item") |>
-  #e_tooltip(formatter = formatar_numero_br(1)) |>
-  e_labels(fontSize = 12,
-           distance = 10,
-           formatter = formatar_numero_br(1)) |>
-  echarts4r::e_title("PCD - Sexo Feminino", "Poder Executivo Federal") |>  
-  #echarts4r::e_legend(right = 0) |> 
-  e_format_y_axis(
-    suffix = "",
-    prefix = "",
-    formatter = e_axis_formatter(locale = "PT", digits = 0)
-  )
-  
-```
+<!-- PCD -->
 
-Estado Civil
+<!-- ```{r, echo=FALSE, message=FALSE, warning=FALSE} -->
+<!-- tab_final |> -->
+<!--   count(PCD = pcd, name = "Qtde")|>  -->
+<!--   arrange(desc(Qtde)) |>  -->
+<!--   e_charts(x = PCD, timeline = FALSE)  |>   -->
+<!--   e_bar(Qtde, legend = FALSE) |>  -->
+<!--   e_tooltip("item") |> -->
+<!--   #e_tooltip(formatter = formatar_numero_br(1)) |> -->
+<!--   e_labels(fontSize = 12, -->
+<!--            distance = 10, -->
+<!--            formatter = formatar_numero_br(1)) |> -->
+<!--   echarts4r::e_title("PCD - Sexo Feminino", "Poder Executivo Federal") |>   -->
+<!--   #echarts4r::e_legend(right = 0) |>  -->
+<!--   e_format_y_axis( -->
+<!--     suffix = "", -->
+<!--     prefix = "", -->
+<!--     formatter = e_axis_formatter(locale = "PT", digits = 0) -->
+<!--   ) -->
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-tab_final |>
-  count(`Estado Civil` = estado_civil , name = "Qtde")|> 
-  arrange(desc(Qtde)) |> 
-  e_charts(x = `Estado Civil`, timeline = FALSE)  |>  
-  e_bar(Qtde, legend = FALSE) |> 
-  e_tooltip("item") |>
-  #e_tooltip(formatter = formatar_numero_br(1)) |>
-  e_labels(fontSize = 12,
-           distance = 10,
-           formatter = formatar_numero_br(1)) |>
-  echarts4r::e_title("Estado Civil - Sexo Feminino", "Poder Executivo Federal") |>  
-  #echarts4r::e_legend(right = 0) |> 
-  e_format_y_axis(
-    suffix = "",
-    prefix = "",
-    formatter = e_axis_formatter(locale = "PT", digits = 0)
-  )
-```
+<!-- ``` -->
 
+<!-- Estado Civil -->
 
-Escolaridade
-
-Talvez criar uma categoria outras e renomear 
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-tab_final |>
-  count(Nível = grupo_escolaridade, Escolaridade = escolaridade , name = "Qtde")|> 
-  arrange(Qtde) |> 
-  e_charts(x = Escolaridade, timeline = FALSE)  |>  
-  e_bar(Qtde, legend = FALSE) |> 
-  e_tooltip("item") |>
-  e_labels(fontSize = 12,
-           distance = 10,
-           position = "inside",
-           formatter = formatar_numero_br(0)) |>
-  echarts4r::e_title("Escolaridade - Sexo Feminino", "Poder Executivo Federal") |>  
-  #echarts4r::e_legend(right = 0) |> 
-  e_x_axis(axisLabel = list( fontSize = 8)) |> 
-  e_format_y_axis(
-    suffix = "",
-    prefix = "",
-    formatter = e_axis_formatter(locale = "PT", digits = 0)
-  ) |> 
-  e_flip_coords() 
-  #e_x_axis(axisLabel = list(rotate = 90))
-```
+<!-- ```{r, echo=FALSE, message=FALSE, warning=FALSE} -->
+<!-- tab_final |> -->
+<!--   count(`Estado Civil` = estado_civil , name = "Qtde")|>  -->
+<!--   arrange(desc(Qtde)) |>  -->
+<!--   e_charts(x = `Estado Civil`, timeline = FALSE)  |>   -->
+<!--   e_bar(Qtde, legend = FALSE) |>  -->
+<!--   e_tooltip("item") |> -->
+<!--   #e_tooltip(formatter = formatar_numero_br(1)) |> -->
+<!--   e_labels(fontSize = 12, -->
+<!--            distance = 10, -->
+<!--            formatter = formatar_numero_br(1)) |> -->
+<!--   echarts4r::e_title("Estado Civil - Sexo Feminino", "Poder Executivo Federal") |>   -->
+<!--   #echarts4r::e_legend(right = 0) |>  -->
+<!--   e_format_y_axis( -->
+<!--     suffix = "", -->
+<!--     prefix = "", -->
+<!--     formatter = e_axis_formatter(locale = "PT", digits = 0) -->
+<!--   ) -->
+<!-- ``` -->
 
 
-Alternativa de treemap
+<!-- Escolaridade -->
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+<!-- Talvez criar uma categoria outras e renomear  -->
 
-#geral
-treemap <- tab_final |>
-  count(Nível = grupo_escolaridade, Escolaridade = escolaridade , name = "Qtde")|> 
-  arrange(Qtde)
-
-
-#grupo
-
-grupo <- treemap |> group_by(Nível) |> 
-  summarise(
-    Qtde= sum(Qtde)
-  )
-
-grupo$parents <- "Total"
-
-grupo <- grupo |> dplyr::relocate(parents, labels = Nível, value = Qtde)
-
-#geral
-
-df <- data.frame(parents = "", labels = "Total", value = 0)
-
-
-# CONSTRUCAO TREEMAP
-colnames(treemap) <- c("parents", "labels", "value")
-
-uni <-  bind_rows(df, grupo, treemap)
-
-universe <- data.tree::FromDataFrameNetwork(uni)
-
-universe |> 
-  e_charts() |> 
-  e_treemap() |> 
-  e_title("Escolaridade", "Sexo Feminino") |> 
-  e_tooltip("item")
-
-```
+<!-- ```{r, echo=FALSE, message=FALSE, warning=FALSE} -->
+<!-- tab_final |> -->
+<!--   count(Nível = grupo_escolaridade, Escolaridade = escolaridade , name = "Qtde")|>  -->
+<!--   arrange(Qtde) |>  -->
+<!--   e_charts(x = Escolaridade, timeline = FALSE)  |>   -->
+<!--   e_bar(Qtde, legend = FALSE) |>  -->
+<!--   e_tooltip("item") |> -->
+<!--   e_labels(fontSize = 12, -->
+<!--            distance = 10, -->
+<!--            position = "inside", -->
+<!--            formatter = formatar_numero_br(0)) |> -->
+<!--   echarts4r::e_title("Escolaridade - Sexo Feminino", "Poder Executivo Federal") |>   -->
+<!--   #echarts4r::e_legend(right = 0) |>  -->
+<!--   e_x_axis(axisLabel = list( fontSize = 8)) |>  -->
+<!--   e_format_y_axis( -->
+<!--     suffix = "", -->
+<!--     prefix = "", -->
+<!--     formatter = e_axis_formatter(locale = "PT", digits = 0) -->
+<!--   ) |>  -->
+<!--   e_flip_coords()  -->
+<!--   #e_x_axis(axisLabel = list(rotate = 90)) -->
+<!-- ``` -->
 
 
-Quantidade de Filhos
+<!-- Alternativa de treemap -->
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-tab_final |>
-  count( Filhos = as.factor(qtd_filhos_menores_de_idade) , name = "Qtde")|> 
-  arrange(desc(Qtde)) |> 
-  e_charts(x = Filhos, timeline = FALSE)  |>  
-  e_bar(Qtde, legend = FALSE) |> 
-  e_tooltip(formatter = formatar_numero_br(1)) |>
-  e_labels(fontSize = 12,
-           distance = 10,
-           formatter = formatar_numero_br(1)) |>
-  echarts4r::e_title("Nº de Filhos", "Poder Executivo Federal") |>  
-  #echarts4r::e_legend(right = 0) |> 
-  e_format_y_axis(
-    suffix = "",
-    prefix = "",
-    formatter = e_axis_formatter(locale = "PT", digits = 0)
-  )
-```
+<!-- ```{r, echo=FALSE, message=FALSE, warning=FALSE} -->
 
-Idade
+<!-- #geral -->
+<!-- treemap <- tab_final |> -->
+<!--   count(Nível = grupo_escolaridade, Escolaridade = escolaridade , name = "Qtde")|>  -->
+<!--   arrange(Qtde) -->
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-tab_final |>
-  count(`Faixa etária` = faixa_etaria_3 , name = "Qtde")|> 
-  arrange(Qtde) |> 
-  e_charts(x = `Faixa etária`, timeline = FALSE)  |>  
-  e_bar(Qtde, legend = FALSE) |> 
-  e_tooltip("item") |>
-  e_labels(fontSize = 12,
-           distance = 10,
-           position = "inside",
-           formatter = formatar_numero_br(0)) |>
-  echarts4r::e_title("Faixa Etária - Sexo Feminino", "Poder Executivo Federal") |>  
-  #echarts4r::e_legend(right = 0) |> 
-  e_x_axis(axisLabel = list( fontSize = 8)) |> 
-  e_format_y_axis(
-    suffix = "",
-    prefix = "",
-    formatter = e_axis_formatter(locale = "PT", digits = 0)
-  ) |> 
-  e_flip_coords() 
-  #e_x_axis(axisLabel = list(rotate = 90))
-```
 
-Remuneração
+<!-- #grupo -->
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-tab_final |>
-  count( `Remuneração` = formattable::currency(
-    remun, big.mark = ".", symbol = "R$ ") , name = "Qtde")|> 
-  arrange(desc(Qtde)) |> 
-  e_charts()  |>  
-  e_histogram(`Remuneração`, legend = FALSE) |> 
-  e_tooltip("item") |>
-  #e_tooltip(formatter = formatar_numero_br(1)) |>
-  e_labels(fontSize = 12,
-           distance = 10,
-           formatter = formatar_numero_br(1)) |>
-  echarts4r::e_title("Remuneração - Sexo Feminino", "Poder Executivo Federal") |>  
-  #echarts4r::e_legend(right = 0) |> 
-  e_format_y_axis(
-    suffix = "",
-    prefix = "",
-    formatter = e_axis_formatter(locale = "PT", digits = 0)
-  ) |> 
-  e_format_x_axis(
-    suffix = "",
-    prefix = "R$") 
-  
-```
+<!-- grupo <- treemap |> group_by(Nível) |>  -->
+<!--   summarise( -->
+<!--     Qtde= sum(Qtde) -->
+<!--   ) -->
+
+<!-- grupo$parents <- "Total" -->
+
+<!-- grupo <- grupo |> dplyr::relocate(parents, labels = Nível, value = Qtde) -->
+
+<!-- #geral -->
+
+<!-- df <- data.frame(parents = "", labels = "Total", value = 0) -->
+
+
+<!-- # CONSTRUCAO TREEMAP -->
+<!-- colnames(treemap) <- c("parents", "labels", "value") -->
+
+<!-- uni <-  bind_rows(df, grupo, treemap) -->
+
+<!-- universe <- data.tree::FromDataFrameNetwork(uni) -->
+
+<!-- universe |>  -->
+<!--   e_charts() |>  -->
+<!--   e_treemap() |>  -->
+<!--   e_title("Escolaridade", "Sexo Feminino") |>  -->
+<!--   e_tooltip("item") -->
+
+<!-- ``` -->
+
+
+<!-- Quantidade de Filhos -->
+
+<!-- ```{r, echo=FALSE, message=FALSE, warning=FALSE} -->
+<!-- tab_final |> -->
+<!--   count( Filhos = as.factor(qtd_filhos_menores_de_idade) , name = "Qtde")|>  -->
+<!--   arrange(desc(Qtde)) |>  -->
+<!--   e_charts(x = Filhos, timeline = FALSE)  |>   -->
+<!--   e_bar(Qtde, legend = FALSE) |>  -->
+<!--   e_tooltip(formatter = formatar_numero_br(1)) |> -->
+<!--   e_labels(fontSize = 12, -->
+<!--            distance = 10, -->
+<!--            formatter = formatar_numero_br(1)) |> -->
+<!--   echarts4r::e_title("Nº de Filhos", "Poder Executivo Federal") |>   -->
+<!--   #echarts4r::e_legend(right = 0) |>  -->
+<!--   e_format_y_axis( -->
+<!--     suffix = "", -->
+<!--     prefix = "", -->
+<!--     formatter = e_axis_formatter(locale = "PT", digits = 0) -->
+<!--   ) -->
+<!-- ``` -->
+
+<!-- Idade -->
+
+<!-- ```{r, echo=FALSE, message=FALSE, warning=FALSE} -->
+<!-- tab_final |> -->
+<!--   count(`Faixa etária` = faixa_etaria_3 , name = "Qtde")|>  -->
+<!--   arrange(Qtde) |>  -->
+<!--   e_charts(x = `Faixa etária`, timeline = FALSE)  |>   -->
+<!--   e_bar(Qtde, legend = FALSE) |>  -->
+<!--   e_tooltip("item") |> -->
+<!--   e_labels(fontSize = 12, -->
+<!--            distance = 10, -->
+<!--            position = "inside", -->
+<!--            formatter = formatar_numero_br(0)) |> -->
+<!--   echarts4r::e_title("Faixa Etária - Sexo Feminino", "Poder Executivo Federal") |>   -->
+<!--   #echarts4r::e_legend(right = 0) |>  -->
+<!--   e_x_axis(axisLabel = list( fontSize = 8)) |>  -->
+<!--   e_format_y_axis( -->
+<!--     suffix = "", -->
+<!--     prefix = "", -->
+<!--     formatter = e_axis_formatter(locale = "PT", digits = 0) -->
+<!--   ) |>  -->
+<!--   e_flip_coords()  -->
+<!--   #e_x_axis(axisLabel = list(rotate = 90)) -->
+<!-- ``` -->
+
+<!-- Remuneração -->
+
+<!-- ```{r, echo=FALSE, message=FALSE, warning=FALSE} -->
+<!-- tab_final |> -->
+<!--   count( `Remuneração` = formattable::currency( -->
+<!--     remun, big.mark = ".", symbol = "R$ ") , name = "Qtde")|>  -->
+<!--   arrange(desc(Qtde)) |>  -->
+<!--   e_charts()  |>   -->
+<!--   e_histogram(`Remuneração`, legend = FALSE) |>  -->
+<!--   e_tooltip("item") |> -->
+<!--   #e_tooltip(formatter = formatar_numero_br(1)) |> -->
+<!--   e_labels(fontSize = 12, -->
+<!--            distance = 10, -->
+<!--            formatter = formatar_numero_br(1)) |> -->
+<!--   echarts4r::e_title("Remuneração - Sexo Feminino", "Poder Executivo Federal") |>   -->
+<!--   #echarts4r::e_legend(right = 0) |>  -->
+<!--   e_format_y_axis( -->
+<!--     suffix = "", -->
+<!--     prefix = "", -->
+<!--     formatter = e_axis_formatter(locale = "PT", digits = 0) -->
+<!--   ) |>  -->
+<!--   e_format_x_axis( -->
+<!--     suffix = "", -->
+<!--     prefix = "R$")  -->
+
+<!-- ``` -->
 
