@@ -498,7 +498,7 @@ knitr::kable(tabela7, caption = 'Tabela 7. Funções e Gratificações Técnicas
 Quanto à ocupação de Funções e Gratificações Técnicas, é possível observar um índice médio de ocupação pelas mulheres entre o ano de 2010 e 2022 em torno de 43,6%; enquanto o de homens foi em torno de 56,4%. 
 
 
-**Fazer Gráfico 6 Ocupaçao de funcoes e gratificacoes tecnicas**
+
 
 ## 3. Fontes e metodologia Base de Dados
 
