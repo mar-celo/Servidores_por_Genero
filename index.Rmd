@@ -91,9 +91,9 @@ data_mes_anterior <- data_atual %m-% months(1)
 
 #q: como formatar uma data para mês como três letras iniciais com a primeira letra em maiúscula e ano com quatro dígitos
 
+mes_anterior_abreviado <- "Mar 2024"
 
-
-mes_anterior_abreviado <- format(data_mes_anterior, "%b %Y") |> stringr::str_to_title()
+#mes_anterior_abreviado <- format(data_mes_anterior, "%b %Y") |> stringr::str_to_title()
 
 df <-  df |> dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Servidores`) | `Mês-Ano Servidores` == mes_anterior_abreviado) |> 
   dplyr::arrange(`Ano Servidores`) |> 
@@ -287,10 +287,12 @@ Natureza especial, dentre outros.
 
 ```{r, echo=FALSE, Warning=FALSE, message=FALSE}
 #tabela4 <- read_excel("dados/dados.xlsx", sheet = "Planilha3")
-tabela4 <- df <- readr::read_delim("Y:/PEP/PEP_reload/PEP_qvd_InOutrasFontes/Fontes_CSV/Infograficos/funcoes_comissionadas.csv", 
+df4 <-  readr::read_delim("Y:/PEP/PEP_reload/PEP_qvd_InOutrasFontes/Fontes_CSV/Infograficos/funcoes_comissionadas.csv", 
     delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
-tabela4 <- tabela4 |> dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Cargos`) |`Mês-Ano Cargos` == mes_anterior_abreviado) |> 
+tabela4 <- df4 |> 
+  dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Cargos`) |`Mês-Ano Cargos` == mes_anterior_abreviado,
+                `Tipo Função Detalhada2` == 'Comissionados de Direção e Assessoramento') |> 
   dplyr::select(`Ano Cargos`, Sexo, TotalVinculos) |> 
   tidyr::pivot_wider(names_from = Sexo, values_from = TotalVinculos) |> 
   dplyr::mutate(Total = Fem + Mas) |> 
@@ -342,7 +344,7 @@ tabela6 <- tabela_funcao |> dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Cargos`) 
 
 knitr::kable(tabela6, caption = 'Tabela 5. Percentual de ocupação de cargos de Direção e Assessoramento por nível e por sexo')
 ```
-_Fonte: Painel Estatístico de Pessoal – Dezembro/2022_ 
+_Fonte: Painel Estatístico de Pessoal – abril/2024_ 
 
 _\* A tabela inclui os cargos de Natureza Especial (NES), DAS, CCE, FCE, FCPE, CD, I/II, CGE I/II/III/IV, CA I/II, CCT I/II/III/IV/V, CAS I/II e CD 1/2/3/4_ 
 
@@ -704,12 +706,33 @@ plotly::ggplotly(grafico) |> plotly::layout(yaxis = list(ticksuffix = "%"))
 Vamos observar ainda a disposição dos ocupantes de Funções e Gratificações Técnicas divididos por sexo. Cabe mencionar que fazem parte desse conjunto de dados as Funções Gratificadas (FG) dos Ministérios, Autarquias e Fundações, FG das Universidades e Institutos Federais, Funções e Gratificações específicos das Agências Reguladoras, entre outros. 
 
 ```{r echo=FALSE}
-tabela7 <- read_excel("dados/dados.xlsx", sheet = "Planilha6")
-
-
-
-knitr::kable(tabela7, caption = 'Tabela 7. Funções e Gratificações Técnicas')
+tabela7 <- df4 |> 
+  dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Cargos`) |`Mês-Ano Cargos` == mes_anterior_abreviado,
+                `Tipo Função Detalhada2` == 'Funções e Gratificações Técnicas') |> 
+  dplyr::select(`Ano Cargos`, Sexo, TotalVinculos) |> 
+  tidyr::pivot_wider(names_from = Sexo, values_from = TotalVinculos) |> 
+  dplyr::mutate(Total = Fem + Mas) |> 
+  dplyr::mutate(`% Mulheres` = (Fem / Total) , `% Homens` = (Mas / Total)) |> 
+  dplyr::rename(Ano = `Ano Cargos`,
+                Mulheres = Fem,
+                Homens = Mas) 
 ```
+
+```{r echo=FALSE, Warning=FALSE, message=FALSE}  
+
+tabela7 <- tabela7 |> dplyr::mutate(`% Mulheres` = scales::percent(`% Mulheres`, accuracy = 0.1),
+                                    `% Homens` = scales::percent(`% Homens`, accuracy = 0.1),
+                                    Homens = comma(Homens, decimal.mark = ",", big.mark = "."),
+                                    Mulheres = comma(Mulheres, decimal.mark = ",", big.mark = "."),
+                                    Total = comma(Total, decimal.mark = ",", big.mark = ".")) |> dplyr::arrange(Ano)
+```
+
+```{r echo=FALSE, Warning=FALSE, message=FALSE}
+knitr::kable(tabela7, caption = 'Tabela 6. Cargos e funções com características de Funções e Gratificações Técnicas')
+```
+
+
+
 
 Quanto à ocupação de Funções e Gratificações Técnicas, é possível observar um índice médio de ocupação pelas mulheres entre o ano de 2010 e 2022 em torno de 43,6%; enquanto o de homens foi em torno de 56,4%. 
 
