@@ -313,7 +313,10 @@ knitr::include_graphics("../img/abs.gif")
 
 ```{r 2022, echo=FALSE, message=FALSE, warning=FALSE}
 
-base_de_dados <- readr::read_csv2("../dados/df_perc.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+base_de_dados <- readr::read_csv2("dados/df_perc.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+
+tabela_funcao <- df <- readr::read_delim("Y:/PEP/PEP_reload/PEP_qvd_InOutrasFontes/Fontes_CSV/Infograficos/Funcoes_comissionadas_niveis.csv ", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 df <- base_de_dados |> tidyr::pivot_longer(
   cols = dplyr::starts_with("X"),
@@ -332,13 +335,28 @@ df <- base_de_dados |> tidyr::pivot_longer(
       )
     )
 
+df_graf <-  tabela_funcao |> dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Cargos`) |`Mês-Ano Cargos` == mes_anterior_abreviado,
+                                    grepl("(^DAS.*|^NES)", RLP ) )|>
+  dplyr::select(`Ano Cargos`, Sexo, RLP, TotalVinculos) |>
+  dplyr::arrange(`Ano Cargos`, Sexo, RLP) |> 
+  tidyr::pivot_wider(names_from = Sexo, values_from = TotalVinculos) |>
+  mutate(Total = Fem + Mas,
+         Fem = (Fem / Total) , Mas = (Mas / Total)) |>
+  dplyr::select(`Ano Cargos`, RLP,  Fem, Mas) |>
+  tidyr::pivot_longer(cols = c(Fem, Mas), names_to = "Genero", values_to = "Percentual") |> 
+  rename(Ano = `Ano Cargos` , Funcao = RLP) |> 
+  # reoder the levels of the factor in Funcao
+  mutate(Funcao = forcats::fct_relevel(Funcao, "DAS-1","DAS-2", "DAS-3","DAS-4","DAS-5", "DAS-6","NES" ),
+         Percentual = ifelse(
+                    Genero == 'Mas', Percentual * -1, Percentual )) 
+
 # Alterar os niveis de genero para aparecer na ordem do grafico
 
-df <- df |> mutate(
+df <- df_graf |> mutate(
   Genero = factor(Genero, levels = c("Mas", "Fem")),
   Percentual = formattable::percent(Percentual,0)
   ) |> 
-  dplyr::filter(Ano == 2022) |> 
+  dplyr::filter(Ano == 2024) |> 
   dplyr::rename(`Função` = Funcao , `Gênero` = Genero )
 ```
 
@@ -376,7 +394,7 @@ grafico <- df %>%
 
 grafico <- grafico +
   labs(
-    title = "Cargos de Direção e Assessoramento - 2022",
+    title = "Cargos de Direção e Assessoramento - 2024",
     subtitle = "\n\nGênero",
     x="",
     y = "\n\nProporção por Gênero",
@@ -432,33 +450,48 @@ grafico <- grafico + theme(
 
 ```{r abss_2022, echo=FALSE, message=FALSE, warning=FALSE}
 
-base_de_dados <- readr::read_csv2("../dados/df_abs.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+#base_de_dados <- readr::read_csv2("dados/df_abs.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+tabela_funcao <- df <- readr::read_delim("Y:/PEP/PEP_reload/PEP_qvd_InOutrasFontes/Fontes_CSV/Infograficos/Funcoes_comissionadas_niveis.csv ", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
-df <- base_de_dados |> tidyr::pivot_longer(
-  cols = dplyr::starts_with("X"),
-  values_to = "Percentual") |>
-  dplyr::mutate(
-    Ano = substr(name, 2, 5),
-    # Percentual = readr::parse_number(
-    #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
-      Ano = readr::parse_number(Ano),
-    Funcao = as.factor(Funcao),
-    Genero = as.factor(Genero)) |>
-  dplyr::select(-name) |>
-  dplyr::mutate(
-    Percentual = ifelse(
-      Genero == 'Mas', Percentual * -1, Percentual
-      )
-    )
+# df <- base_de_dados |> tidyr::pivot_longer(
+#   cols = dplyr::starts_with("X"),
+#   values_to = "Percentual") |>
+#   dplyr::mutate(
+#     Ano = substr(name, 2, 5),
+#     # Percentual = readr::parse_number(
+#     #   Percentual, locale = locale(decimal_mark = ",", grouping_mark = ".")),
+#       Ano = readr::parse_number(Ano),
+#     Funcao = as.factor(Funcao),
+#     Genero = as.factor(Genero)) |>
+#   dplyr::select(-name) |>
+#   dplyr::mutate(
+#     Percentual = ifelse(
+#       Genero == 'Mas', Percentual * -1, Percentual
+#       )
+#     )
+
+df_graf <-  tabela_funcao |> dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Cargos`) |`Mês-Ano Cargos` == mes_anterior_abreviado,
+                                    grepl("(^DAS.*|^NES)", RLP ) )|>
+  dplyr::select(`Ano Cargos`, Sexo, RLP, TotalVinculos) |>
+  dplyr::arrange(`Ano Cargos`, Sexo, RLP) |> 
+  tidyr::pivot_wider(names_from = Sexo, values_from = TotalVinculos) |>
+   dplyr::select(`Ano Cargos`, RLP,  Fem, Mas) |>
+  tidyr::pivot_longer(cols = c(Fem, Mas), names_to = "Genero", values_to = "Valor") |> 
+  rename(Ano = `Ano Cargos` , Funcao = RLP) |> 
+  # reoder the levels of the factor in Funcao
+  mutate(Funcao = forcats::fct_relevel(Funcao, "DAS-1","DAS-2", "DAS-3","DAS-4","DAS-5", "DAS-6","NES"),
+         Valor = ifelse(
+                    Genero == 'Mas', Valor * -1, Valor )) 
 
 
 
 # Alterar os niveis de genero para aparecer na ordem do grafico
 
-df <- df |> mutate(
+df <- df_graf |> mutate(
   Genero = factor(Genero, levels = c("Mas", "Fem"))
-)|> dplyr::filter(Ano == 2022)|> 
-  dplyr::rename(`Função` = Funcao , `Gênero` = Genero, Total = Percentual )
+)|> dplyr::filter(Ano == 2024)|> 
+  dplyr::rename(`Função` = Funcao , `Gênero` = Genero, Total = Valor)
 
 ```
 
@@ -485,7 +518,7 @@ grafico <- df %>%
 
 grafico <- grafico +
   labs(
-    title = "Cargos de Direção e Assessoramento - 2022",
+    title = "Cargos de Direção e Assessoramento - 2024",
     subtitle = "\n\nGênero",
     x= "",
     y = "\n\nTotal por Gênero",

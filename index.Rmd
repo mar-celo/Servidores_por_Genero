@@ -61,7 +61,6 @@ quantitativo de servidores ativos separados por sexo no Poder Executivo
 Federal Civil.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
-library(readxl)
 library(tidyverse)
 #dados <- read_excel("dados/dados.xlsx") 
 
@@ -85,15 +84,15 @@ data_atual <- Sys.Date()
 
 
 # Subtrai um mês da data atual
-data_mes_anterior <- data_atual %m-% months(1)
+data_mes_anterior <- data_atual %m-% months(2)
 
 # Formate o mês como três letras iniciais com a primeira letra em maiúscula e ano com quatro dígitos
 
 #q: como formatar uma data para mês como três letras iniciais com a primeira letra em maiúscula e ano com quatro dígitos
 
-mes_anterior_abreviado <- "Mar 2024"
+#mes_anterior_abreviado <- "Mar 2024"
 
-#mes_anterior_abreviado <- format(data_mes_anterior, "%b %Y") |> stringr::str_to_title()
+mes_anterior_abreviado <- format(data_mes_anterior, "%b %Y") |> stringr::str_to_title()
 
 df <-  df |> dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Servidores`) | `Mês-Ano Servidores` == mes_anterior_abreviado) |> 
   dplyr::arrange(`Ano Servidores`) |> 
@@ -359,7 +358,7 @@ Do total de cargos de Direção e Assessoramento em 2021, as mulheres ocupavam o
 
 ```{r dados_percentual-graficos, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
 
-base_de_dados <- readr::read_csv2("dados/df_perc.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
+#base_de_dados <- readr::read_csv2("dados/df_perc.csv", locale = locale(decimal_mark = ",", grouping_mark = "."))
 
 df_graf <-  tabela_funcao |> dplyr::filter(grepl("^[Dd]ez.*", `Mês-Ano Cargos`) |`Mês-Ano Cargos` == mes_anterior_abreviado,
                                     grepl("(^DAS.*|^NES)", RLP ) )|>
