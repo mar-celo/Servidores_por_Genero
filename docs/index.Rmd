@@ -18,6 +18,8 @@ library(clipr)
 library(tidyverse)
 library(ggpol)
 library(gganimate)
+
+
 library(gifski)
 library(kableExtra)
 library(echarts4r)
@@ -669,7 +671,7 @@ plotly::ggplotly(grafico)
 
 
 ```{r ETNIA, echo=FALSE, message=FALSE, warning=FALSE}
-etnia <- readr::read_csv2("../dados/tabula-Historico-Etnia.csv", col_types = c(Data = "c") )
+etnia <- readr::read_csv2("dados/tabula-Historico-Etnia.csv", col_types = c(Data = "c") )
 
 # etnia <- etnia |> dplyr::mutate(
 #   `% Pretos Pardos Negros` =formattable::percent(`% Pretos Pardos Negros`, 0)
@@ -678,9 +680,9 @@ etnia <- readr::read_csv2("../dados/tabula-Historico-Etnia.csv", col_types = c(D
 
 library(echarts4r)
 graf_etnia <- etnia  |> 
-  e_charts(x = Data)  |> 
+  e_charts(x = Ano)  |> 
   echarts4r::e_tooltip() |> 
-  e_x_axis(Data, axisPointer = list(
+  e_x_axis(Ano, axisPointer = list(
     show = TRUE,
     label = list(show = FALSE)
   )) %>%
@@ -713,12 +715,13 @@ Agrupamento de etnias:
 ```{r , echo=FALSE, message=FALSE, warning=FALSE}
 agrupados <- etnia |> janitor::clean_names() |> 
   dplyr::mutate(
-  `Demais Etnias` = round((branca + amarela + n_o_informado) / total_geral,3), 
+    ano = as.character(ano),
+  `Demais Etnias` = round((branca + amarela + nao_informado) / total_geral,3), 
   `Indígenas` = round(indigena/ total_geral, 3)
-) |> select(data, `Pretos-Pardos-Negros` = percent_pretos_pardos_negros, `Demais Etnias`,  Indígenas)  
+) |> select(ano, `Pretos-Pardos-Negros` = percent_pretos_pardos_negros, `Demais Etnias`,  Indígenas)  
   
 agrupados |>
-  e_charts(x = data) |>
+  e_charts(x = ano) |>
   echarts4r::e_tooltip(
     formatter = e_tooltip_item_formatter("percent",
       digits = 1)
